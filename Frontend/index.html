@@ -1,11 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>My first welcome dApp!</title>
+  <meta charset="UTF-8" />
+  <title>Vehicle Registry dApp</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </head>
-<body></body>
+<body>
+  <h1>Vehicle Registry</h1>
+
+  <div class="section">
+    <h2>Register Vehicle</h2>
+    <input id="vin" placeholder="VIN" />
+    <input id="model" placeholder="Model" />
+    <input id="year" type="number" placeholder="Year" />
+    <input id="owner" placeholder="Owner Address" />
+    <button onclick="registerVehicle()">Register</button>
+  </div>
+
+  <div class="section">
+    <h2>Get Vehicle Info</h2>
+    <input id="tokenId" type="number" placeholder="Token ID" />
+    <button onclick="getVehicle()">Get Vehicle</button>
+    <pre id="result"></pre>
+  </div>
+
+  <script src="abi.js"></script>
+  <script>
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    let signer, contract;
+    const contractAddress = "0xYourContractAddress"; // Replace later
+
+    async function init() {
+      await provider.send("eth_requestAccounts", []);
+      signer = provider.getSigner();
+      contract = new ethers.Contract(contractAddress, contractABI, signer);
+    }
+
+    async function registerVehicle() {
+      const vin = document.getElementById("vin").value;
+      const model = document.getElementById("model").value;
+      const year = parseInt(document.getElementById("year").value);
+      const owner = document.getElementById("owner").value;
+      alert(`[Mock] Register: ${vin}, ${model}, ${year}, ${owner}`);
+    }
+
+    async function getVehicle() {
+      const id = document.getElementById("tokenId").value;
+      alert(`[Mock] Fetch vehicle info for ID: ${id}`);
+    }
+
+    init();
+  </script>
+</body>
 </html>
-Body Tag

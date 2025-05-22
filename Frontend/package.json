@@ -1,0 +1,11 @@
+{
+  "name": "Frontend",
+  "version": "1.0.0",
+  "description": "Vehicle Registry UI",
+  "scripts": {
+    "start": "lite-server"
+  },
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
+}
