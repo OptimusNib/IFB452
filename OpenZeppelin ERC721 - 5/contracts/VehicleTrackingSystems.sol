@@ -24,6 +24,9 @@ contract FootballPlayers is ERC721URIStorage,  Ownable {
         bool isapproved;
     }
     struct ServiceLog{
+                address ServiceProvider;
+
+        uint256 carId;
         uint256 timeServiced;
         string nameProvider;
         string description;
@@ -33,7 +36,7 @@ contract FootballPlayers is ERC721URIStorage,  Ownable {
      mapping(uint256 => ServiceLog) public logs;
     // Declare the event
     event CarRegistered(uint256 CarId, address indexed manufacturer, string car_name, string car_model, uint256 year, uint256 timeregisterd);
-    event CarServiced(uint256 timeServiced , string nameProvider, string description);
+    event CarServiced(uint256 CarId, address indexed serviceprovider, uint256 timeServiced , string nameProvider, string description);
     constructor()
         ERC721("Car for sales", "CFS")
         Ownable(msg.sender)
@@ -71,16 +74,18 @@ contract FootballPlayers is ERC721URIStorage,  Ownable {
         require(Serviceprovider[msg.sender].isapproved == true , "Not approved service provider");
     _;
     }
-   function logService(string memory _newDescription) public onlyServiceProvider{
-        logs[CarCount] = ServiceLog({ timeServiced : block.timestamp , description : _newDescription , nameProvider: Serviceprovider[msg.sender].name});
-     emit CarServiced(block.timestamp,  Serviceprovider[msg.sender].name , _newDescription ); 
+   function logService(string memory _newDescription, uint256 id) public onlyServiceProvider{
+                require(id > 0 && id <= CarCount, "Car not found");
+
+        logs[id] = ServiceLog({ ServiceProvider: msg.sender, carId: id, timeServiced : block.timestamp , description : _newDescription , nameProvider: Serviceprovider[msg.sender].name});
+     emit CarServiced(id, msg.sender, block.timestamp,  Serviceprovider[msg.sender].name , _newDescription ); 
    }
 
-function getServiceDetails(uint256 carId) public view returns ( string memory, string memory, uint256){
+function getServiceDetails(uint256 carId) public view returns (address, uint256, uint256, string memory, string memory){
     // Check if the provided product ID is valid
         require(carId > 0 && carId <= CarCount, "Invalid car ID");
         ServiceLog storage log= logs[carId];
-        return (log.nameProvider, log.description , log.timeServiced);
+        return (log.ServiceProvider, log.carId, log.timeServiced, log.nameProvider, log.description);
 }
     function getCarDetails(uint256 carId) public view returns (address, string memory, string memory, uint256, uint256 , string memory) {
         // Check if the provided product ID is valid
