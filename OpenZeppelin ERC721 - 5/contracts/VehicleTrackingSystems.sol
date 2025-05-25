@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
  
-contract FootballPlayers is ERC721URIStorage,  Ownable {
+contract Cars is ERC721URIStorage,  Ownable {
 
     uint256 public CarCount;
 
@@ -34,9 +34,10 @@ contract FootballPlayers is ERC721URIStorage,  Ownable {
      mapping(uint256 => Car) public cars;
      mapping(address => ServiceCar) public Serviceprovider;
      mapping(uint256 => ServiceLog) public logs;
-    // Declare the event
+    
     event CarRegistered(uint256 CarId, address indexed manufacturer, string car_name, string car_model, uint256 year, uint256 timeregisterd);
     event CarServiced(uint256 CarId, address indexed serviceprovider, uint256 timeServiced , string nameProvider, string description);
+    
     constructor()
         ERC721("Car for sales", "CFS")
         Ownable(msg.sender)
@@ -74,24 +75,27 @@ contract FootballPlayers is ERC721URIStorage,  Ownable {
         require(Serviceprovider[msg.sender].isapproved == true , "Not approved service provider");
     _;
     }
-   function logService(string memory _newDescription, uint256 id) public onlyServiceProvider{
+   function logService(string memory _newDescription, uint256 id, string memory _tokenURI
+) public onlyServiceProvider{
                 require(id > 0 && id <= CarCount, "Car not found");
+              uint256 tokenId = id;
+
+        _setTokenURI(tokenId, _tokenURI);
 
         logs[id] = ServiceLog({ ServiceProvider: msg.sender, carId: id, timeServiced : block.timestamp , description : _newDescription , nameProvider: Serviceprovider[msg.sender].name});
      emit CarServiced(id, msg.sender, block.timestamp,  Serviceprovider[msg.sender].name , _newDescription ); 
    }
 
 function getServiceDetails(uint256 carId) public view returns (address, uint256, uint256, string memory, string memory){
-    // Check if the provided product ID is valid
+    
         require(carId > 0 && carId <= CarCount, "Invalid car ID");
         ServiceLog storage log= logs[carId];
         return (log.ServiceProvider, log.carId, log.timeServiced, log.nameProvider, log.description);
 }
     function getCarDetails(uint256 carId) public view returns (address, string memory, string memory, uint256, uint256 , string memory) {
-        // Check if the provided product ID is valid
+     
         require(carId > 0 && carId <= CarCount, "Invalid car ID");
         
-        // Retrieve and return the details of the specified product
         Car storage car = cars[carId];
         return ( car.manufacturer,car.name, car.model, car.year, car.timeregistered, tokenURI(carId));
     }

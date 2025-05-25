@@ -10,15 +10,16 @@
   </style>
 </head>
 <body>
-  <h1> Car Registry (NFT-based)</h1>
+  <h1>🚗 Car Registry (NFT-based)</h1>
 
   <div class="card">
     <h2>Register New Car</h2>
     <input id="name" placeholder="Name (e.g. Toyota)" />
     <input id="model" placeholder="Model (e.g. Corolla)" />
     <input id="year" type="number" placeholder="Year of Car" />
-    <input id="tokenURI" placeholder="Token URI (e.g. IPFS link)" />
     <button onclick="registerCar()">Register Car</button>
+	  <pre id="output"></pre>
+
   </div>
 
   <div class="card">
@@ -27,7 +28,14 @@
     <button onclick="getCarDetails()">View Details</button>
     <pre id="details"></pre>
   </div>
-   
+     <div class="card">
+    <h2>Add Service</h2>
+	    <input id="address" placeholder="address" />
+
+    <input id="names" placeholder="Name" />
+
+    <button onclick="addServiceprovider()">Register Car</button>
+  </div>
   <div class="card">
     <h2>Log Service</h2>
     <input id="tokenId" type="number" placeholder="Token ID" >
@@ -44,44 +52,8 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
   <script>
-    const contractAddress = "0x38C9407016370537441A8dDf681612d7128DBd00";
-    const contractABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newStakeholder",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "_newName",
-				"type": "string"
-			}
-		],
-		"name": "addServiceprovider",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "approve",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
+    const contractAddress = "0xa187411d9b219C8a0304c652D55cE4F4a5f3Ae76";
+    const contractABI =[
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -362,24 +334,6 @@
 		"type": "event"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_newDescription",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "logService",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -412,110 +366,6 @@
 		"type": "event"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_model",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_year",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_tokenURI",
-				"type": "string"
-			}
-		],
-		"name": "registerCar",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bytes",
-				"name": "data",
-				"type": "bytes"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "approved",
-				"type": "bool"
-			}
-		],
-		"name": "setApprovalForAll",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -541,12 +391,67 @@
 		"type": "event"
 	},
 	{
+		"inputs": [],
+		"name": "CarCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "from",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "Serviceprovider",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "ServiceProvider",
 				"type": "address"
 			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "isapproved",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newStakeholder",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_newName",
+				"type": "string"
+			}
+		],
+		"name": "addServiceprovider",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
 				"internalType": "address",
 				"name": "to",
@@ -558,20 +463,7 @@
 				"type": "uint256"
 			}
 		],
-		"name": "transferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
+		"name": "approve",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -585,19 +477,6 @@
 			}
 		],
 		"name": "balanceOf",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "CarCount",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -776,6 +655,29 @@
 	{
 		"inputs": [
 			{
+				"internalType": "string",
+				"name": "_newDescription",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_tokenURI",
+				"type": "string"
+			}
+		],
+		"name": "logService",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
@@ -860,30 +762,105 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "Serviceprovider",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "ServiceProvider",
-				"type": "address"
-			},
-			{
 				"internalType": "string",
-				"name": "name",
+				"name": "_name",
 				"type": "string"
 			},
 			{
+				"internalType": "string",
+				"name": "_model",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_year",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_tokenURI",
+				"type": "string"
+			}
+		],
+		"name": "registerCar",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
 				"internalType": "bool",
-				"name": "isapproved",
+				"name": "approved",
 				"type": "bool"
 			}
 		],
-		"stateMutability": "view",
+		"name": "setApprovalForAll",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -936,43 +913,112 @@
 		],
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	}
 ]
     let web3, contract, account;
-
+ const pinataJWT = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI3N2E0N2ZkMC0zYzdhLTQ5MjQtYWFlZS00MTc5NmZjM2I5ZWIiLCJlbWFpbCI6InRydW9uZ3RhbnBodTA1MDcyMDAzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI0MDExMDQ5NjU4OGRkNjNhOTBlZCIsInNjb3BlZEtleVNlY3JldCI6ImQ5Y2JlZThiOTQxZGM3ODIxODY0OGQ2YWNkOTc4Y2Y3OGFkYjQ4NWU4MzYwNmNkYzNhZjIxN2MwMDNkZDJlZDUiLCJleHAiOjE3Nzk2NzM3NjV9.vraPsK0HqatUS_bQ8NiAxaa0wFkK28GRkuG94FH8gsI";
     async function init() {
       if (typeof window.ethereum !== 'undefined') {
         web3 = new Web3(window.ethereum);
 		
-
-         window.ethereum.enable()
-                .then(function (accounts) {
-                    web3.eth.defaultAccount = accounts[0];
-                })
-                .catch(function (error) {
-                    console.error(error);
-                });
         contract = new web3.eth.Contract(contractABI, contractAddress);
       } else {
         alert("Please install MetaMask.");
       }
     }
 
-    async function registerCar() {
+   async function registerCar() {
       const name = document.getElementById("name").value;
       const model = document.getElementById("model").value;
-      const year = document.getElementById("year").value;
-      const uri = document.getElementById("tokenURI").value;
+      const year = parseInt(document.getElementById("year").value);
+
+      if (!name || !model || !year) {
+        alert("Please fill in all fields.");
+        return;
+      }
+  const now = new Date();
+
+      const Cardata = {
+        name,
+        description: "Car NFT metadata stored on IPFS using Pinata",
+		attributes: [
+    { "trait_type": "Model", "value": `${model}` },
+    { "trait_type": "Year", "value": `${year}` },
+    { "trait_type": "Time_Registered", "value": `${now.toLocaleString()}` }
+  ]
+      };
 
       try {
-        await contract.methods.registerCar(name, model, year, uri)
-          .send({ from:  web3.eth.defaultAccount  });
+        const response = await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: pinataJWT
+          },
+          body: JSON.stringify({
+            pinataMetadata: { name: `${name}_${model}` },
+            pinataContent: Cardata
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.IpfsHash) {
+          const ipfsURI = `ipfs://${result.IpfsHash}`;
+		  const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+        const Account = accounts[0]; 
+        await contract.methods.registerCar(name, model, year, ipfsURI)
+          .send({ from: Account });
         alert("Car registered successfully!");
+        } else {
+          throw new Error("Failed to upload to Pinata");
+        }
       } catch (err) {
         console.error(err);
-        alert("Error registering car");
+        alert("❌ Upload failed");
       }
+	  
+	  
+      
     }
+
 
     async function getCarDetails() {
       const tokenId = document.getElementById("carId").value;
@@ -989,31 +1035,74 @@
           timeregistered: date,
           metadataURI: result[5]
         }, null, 2);
+	
       } catch (err) {
         console.error(err);
         alert("Car not found");
       }
     }
    
+	async function addServiceprovider(){
+		  const address = document.getElementById("address").value;
+           const name = document.getElementById("names").value;
+		   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+        const Account = accounts[0]; 
+       try {
+        await contract.methods.addServiceprovider(address, name)
+          .send({ from:  Account  });
+        alert("Car registered successfully!");
+      } catch (err) {
+        console.error(err);
+        alert("Error registering car");
+      }
+  
+	} 
 	async function logService() {
   const tokenId = document.getElementById("tokenId").value;
   const description = document.getElementById("description").value;
 
+  const Servicedata = {
+    description,
+    carId: tokenId,
+    timestamp: new Date().toISOString()
+  };
+
   try {
-    // Get all connected accounts
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const response = await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: pinataJWT
+      },
+      body: JSON.stringify({
+        pinataMetadata: {
+          name: `car_${tokenId}_service_log`
+        },
+        pinataContent: Servicedata
+      })
+    });
 
-    const secondAccount = accounts[1]; 
+    const result = await response.json();
 
-    await contract.methods.logService(description, tokenId)
-      .send({ from: secondAccount });
+    if (result.IpfsHash) {
+      const ipfsURI = `ipfs://${result.IpfsHash}`;
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const secondAccount = accounts[1];
 
-    alert("✅ Service Logged successfully with second account!");
+      await contract.methods.logService(description, tokenId, ipfsURI)
+        .send({ from: secondAccount });
+
+      alert("✅ Service Logged successfully with second account!");
+    } else {
+      throw new Error("Upload to Pinata failed");
+    }
   } catch (err) {
     console.error(err);
-    alert(" Error logging service with second account");
+    alert("❌ Error logging service with second account");
   }
 }
+
 
 
 	async function getServiceDetails(){
@@ -1038,6 +1127,9 @@
       }
 	}
     window.addEventListener("load", init);
+	    window.registerCar = registerCar;
+		window.addServiceprovider=addServiceprovider;
+      window.logService= logService;
   </script>
 </body>
 </html>
