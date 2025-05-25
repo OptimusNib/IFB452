@@ -97,4 +97,92 @@ function getServiceDetails(uint256 carId) public view returns (address, uint256,
     }
     }
 
+
+
+// logs insurance claims and accident history
+contract InsuranceRecord {
+    address public owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+    
+    // insurance incident or claim
+    struct Incident {
+        string summary; //description
+        string insurer; //company name
+        uint256 date; //UNIX time... need to update
+    }
+
+    //map vehicle tokenId to list of incidents
+    mapping(uint256 => Incident[]) private incidentHistory;
+
+    //map storing approved insurers that can write
+    mapping(address => bool) public approvedInsurers;
+
+    //restricts functions to approved contract owners
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only contract owner");
+        _;
+    }
+
+    //restricts functions to approved contract owners
+    modifier onlyApprovedInsurer() {
+        require(approvedInsurers[msg.sender], "Not an approved insurer");
+        _;
+    }
+
+    // add approved contract owner
+    function addApprovedInsurer(address insurer) public onlyOwner {
+        approvedInsurers[insurer] = true;
+    }
+
+    //remove contract owner
+    function removeApprovedInsurer(address insurer) public onlyOwner {
+        approvedInsurers[insurer] = false;
+    }
+
+    //log incident
+    function logIncident(uint256 tokenId, string memory summary, string memory insurer) public onlyApprovedInsurer {
+        incidentHistory[tokenId].push(Incident(summary, insurer, block.timestamp));
+    }
+
+    // retrieve incidident log
+    function getIncidents(uint256 tokenId) public view returns (Incident[] memory) {
+        return incidentHistory[tokenId];
+    }
+}
+
+
+contract Verification {
+    //other contract references
+    //VehicleRegistry public vehicleRegistry; not sure where vehicle info is stored
+    FootballPlayers public serviceLog;
+    InsuranceRecord public insuranceRecord;
+
+    constructor(
+        //VehicleRegistry _vehicleRegistry,
+        FootballPlayers _serviceLog,
+        InsuranceRecord _insuranceRecord
+    ) {
+        //vehicleRegistry = _vehicleRegistry;
+        serviceLog = _serviceLog;
+        insuranceRecord = _insuranceRecord;
+    }
+
+    function verifyVehicle(uint256 tokenId) external view returns (
+        string memory make,
+        string memory model,
+        string memory year,
+        address currentOwner,
+        string[] memory services,
+        string[] memory incidentSummaries
+    ) {
+        //not sure where vehicle info is stored
+        (make, model, year, currentOwner) = serviceLog.getCarDetails(tokenId);
+        services = serviceLog.getServiceDetails(tokenId);
+        (incidentSummaries, , ) = insuranceRecord.getIncidents(tokenId);
+    }
+}
+
    
