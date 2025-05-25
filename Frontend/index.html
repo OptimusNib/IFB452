@@ -5,134 +5,189 @@
   <title>Vehicle Registry dApp</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <script src="abi.js"></script>
 </head>
 <body>
-  <h1>Vehicle Registry</h1>
+  <h1>🚗 Vehicle Registry dApp</h1>
 
-  <div class="section">
-    <h2>Register Vehicle</h2>
-    <input id="vin" placeholder="VIN" />
-    <input id="model" placeholder="Model" />
-    <input id="year" type="number" placeholder="Year" />
-    <input id="owner" placeholder="Owner Address" />
-    <button onclick="registerVehicle()">Register</button>
+  <!-- Car NFT Registration & Lookup -->
+  <div class="card">
+    <h2>Register New Car</h2>
+    <input id="name"    placeholder="Name (e.g. Toyota)" />
+    <input id="model"   placeholder="Model (e.g. Corolla)" />
+    <input id="year"    type="number" placeholder="Year of Car" />
+    <button onclick="registerCar()">Register Car</button>
+    <pre id="output"></pre>
   </div>
 
-  <div class="section">
-    <h2>Get Vehicle Info</h2>
-    <input id="tokenId" type="number" placeholder="Token ID" />
-    <button onclick="getVehicle()">Get Vehicle</button>
-    <pre id="result"></pre>
+  <div class="card">
+    <h2>Get Car Details</h2>
+    <input id="carId" type="number" placeholder="Token ID" />
+    <button onclick="getCarDetails()">View Details</button>
+    <pre id="details"></pre>
   </div>
 
-  <h2>Log Insurance Incident</h2>
-    <input type="number" id="incidentTokenId" placeholder="Vehicle Token ID" />
-    <input type="text" id="incidentSummary" placeholder="Summary" />
-    <input type="text" id="incidentInsurer" placeholder="Insurer Name" />
+  <!-- Service Centre -->
+  <div class="card">
+    <h2>Add Service Provider</h2>
+    <input id="serviceAddress" placeholder="Provider Address" />
+    <input id="serviceName"    placeholder="Provider Name" />
+    <button onclick="addServiceProvider()">Register Provider</button>
+  </div>
+
+  <div class="card">
+    <h2>Log Service</h2>
+    <input id="serviceTokenId" type="number" placeholder="Token ID" />
+    <input id="serviceDesc"    placeholder="Description" />
+    <button onclick="logService()">Log Service</button>
+  </div>
+
+  <div class="card">
+    <h2>Get Service Details</h2>
+    <input id="serviceQueryId" type="number" placeholder="Token ID" />
+    <button onclick="getServiceDetails()">View Service</button>
+    <pre id="serviceDetails"></pre>
+  </div>
+
+  <!-- Insurance -->
+  <div class="card">
+    <h2>Log Insurance Incident</h2>
+    <input id="incidentTokenId"   type="number" placeholder="Vehicle Token ID" />
+    <input id="incidentSummary"   placeholder="Summary" />
+    <input id="incidentInsurer"   placeholder="Insurer Name" />
     <button onclick="logIncident()">Log Incident</button>
+  </div>
 
+  <!-- Verification -->
+  <div class="card">
+    <h2>Verify Vehicle</h2>
+    <input id="verifyTokenId" type="number" placeholder="Vehicle Token ID" />
+    <button onclick="verifyVehicle()">Verify</button>
+    <pre id="verificationResult"></pre>
+  </div>
 
-  <h2>Verify Vehicle</h2>
-  <input type="number" id="verifyTokenId" placeholder="Vehicle Token ID" />
-  <button onclick="verifyVehicle()">Verify</button>
-  <pre id="verificationResult"></pre>
-
-  <script src="abi.js"></script>
   <script>
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    let signer, contract;
-    const contractAddress = "0xYourContractAddress"; // Replace later
+    // ethers.js setup
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    let signer,
+        registryServiceContract,
+        insuranceContract,
+        verificationContract
+
+    // loaded from abi.js
+    const registryServiceAddress = window.registryServiceAddress
+    const insuranceAddress       = window.insuranceAddress
+    const verificationAddress    = window.verificationAddress
 
     async function init() {
-      await provider.send("eth_requestAccounts", []);
-      signer = provider.getSigner();
-      contract = new ethers.Contract(contractAddress, contractABI, signer);
+      await provider.send("eth_requestAccounts", [])
+      signer                     = provider.getSigner()
+      registryServiceContract    = new ethers.Contract(registryServiceAddress, registryServiceABI, signer)
+      insuranceContract          = new ethers.Contract(insuranceAddress,       insuranceABI,       signer)
+      verificationContract       = new ethers.Contract(verificationAddress,    verificationABI,    signer)
     }
 
-    async function registerVehicle() {
-      const vin = document.getElementById("vin").value;
-      const model = document.getElementById("model").value;
-      const year = parseInt(document.getElementById("year").value);
-      const owner = document.getElementById("owner").value;
-      alert(`[Mock] Register: ${vin}, ${model}, ${year}, ${owner}`);
+    // --- Car / Service functions ---
+
+    async function registerCar() {
+      const name  = document.getElementById("name").value
+      const model = document.getElementById("model").value
+      const year  = parseInt(document.getElementById("year").value)
+      const tx    = await registryServiceContract.registerCar(name, model, year, /* tokenURI */ "")
+      await tx.wait()
+      document.getElementById("output").innerText = "Car registered in tx " + tx.hash
     }
 
-    async function getVehicle() {
-      const id = document.getElementById("tokenId").value;
-      alert(`[Mock] Fetch vehicle info for ID: ${id}`);
+    async function getCarDetails() {
+      const id = parseInt(document.getElementById("carId").value)
+      const r  = await registryServiceContract.getCarDetails(id)
+      document.getElementById("details").innerText = JSON.stringify({
+        manufacturer: r[0],
+        name:         r[1],
+        model:        r[2],
+        year:         r[3].toNumber(),
+        registered:   new Date(r[4].toNumber() * 1000).toLocaleString(),
+        metadataURI:  r[5]
+      }, null, 2)
     }
+
+    async function addServiceProvider() {
+      const addr = document.getElementById("serviceAddress").value
+      const nm   = document.getElementById("serviceName").value
+      const tx   = await registryServiceContract.addServiceprovider(addr, nm)
+      await tx.wait()
+      alert("Service provider added")
+    }
+
+    async function logService() {
+      const tokenId    = parseInt(document.getElementById("serviceTokenId").value)
+      const description= document.getElementById("serviceDesc").value
+      const tx         = await registryServiceContract.logService(description, tokenId, /* ipfsURI */ "")
+      await tx.wait()
+      alert("Service logged")
+    }
+
+    async function getServiceDetails() {
+      const id = parseInt(document.getElementById("serviceQueryId").value)
+      const r  = await registryServiceContract.getServiceDetails(id)
+      document.getElementById("serviceDetails").innerText = JSON.stringify({
+        provider:   r[0],
+        carId:      r[1].toNumber(),
+        servicedOn: new Date(r[2].toNumber() * 1000).toLocaleString(),
+        name:       r[3],
+        desc:       r[4]
+      }, null, 2)
+    }
+
+    // --- Insurance functions ---
 
     async function logIncident() {
-      const tokenId = document.getElementById("incidentTokenId").value;
-      const summary = document.getElementById("incidentSummary").value;
-      const insurer = document.getElementById("incidentInsurer").value;
-
-      try {
-        const tx = await insuranceRecordContract.logIncident(tokenId, summary, insurer);
-        await tx.wait();
-        alert("Incident logged successfully.");
-      } catch (err) {
-          console.error("Error logging incident:", err);
-          alert("Failed to log incident.");
-      }
+      const tokenId = parseInt(document.getElementById("incidentTokenId").value)
+      const summary = document.getElementById("incidentSummary").value
+      const insurer = document.getElementById("incidentInsurer").value
+      const tx = await insuranceContract.logIncident(tokenId, summary, insurer)
+      await tx.wait()
+      alert("Incident logged")
     }
+
+    // --- Verification ---
+
     async function verifyVehicle() {
-      const tokenId = document.getElementById("verifyTokenId").value;
-      const resultEl = document.getElementById("verificationResult");
+      const id = parseInt(document.getElementById("verifyTokenId").value)
+      const r  = await verificationContract.verifyVehicle(id)
+      const [
+        manufacturer, name, model, year, ts,
+        svcProvider, svcCarId, svcTime, svcName, svcDesc,
+        incidents
+      ] = r
 
-      try {
-        const result = await verificationContract.verifyVehicle(tokenId);
+      let out = `
+Vehicle:
+  Manufacturer: ${manufacturer}
+  Name:         ${name}
+  Model:        ${model}
+  Year:         ${year.toNumber()}
+  Registered:   ${new Date(ts.toNumber() * 1000).toLocaleString()}
 
-        const [
-          manufacturer,
-          name,
-          model,
-          year,
-          timeregistered,
-          serviceProvider,
-          carId,
-          timeServiced,
-          nameProvider,
-          description,
-          incidentSummaries
-        ] = result;
+Service:
+  Provider:     ${svcProvider}
+  Name:         ${svcName}
+  Description:  ${svcDesc}
+  When:         ${new Date(svcTime.toNumber() * 1000).toLocaleString()}
 
-        let output = `
-    Vehicle Details
-    ---------------
-    Manufacturer: ${manufacturer}
-    Name: ${name}
-    Model: ${model}
-    Year: ${year}
-    Registered: ${new Date(Number(timeregistered) * 1000).toLocaleString()}
-
-    Service Details
-    ---------------
-    Service Provider: ${serviceProvider}
-    Provider Name: ${nameProvider}
-    Service Description: ${description}
-    Serviced On: ${new Date(Number(timeServiced) * 1000).toLocaleString()}
-
-    Incident Summaries
-    ------------------`;
-
-        if (incidentSummaries.length === 0) {
-          output += `\nNo incidents logged.`;
-        } else {
-          incidentSummaries.forEach((s, i) => {
-            output += `\n${i + 1}. ${s}`;
-          });
-        }
-
-        resultEl.innerText = output;
-
-      } catch (err) {
-        console.error("Verification failed:", err);
-        resultEl.innerText = "Error verifying vehicle.";
+Incidents:`
+      if (incidents.length === 0) {
+        out += `\n  None`
+      } else {
+        incidents.forEach((i, idx) => {
+          out += `\n  ${idx+1}. ${i}`
+        })
       }
+
+      document.getElementById("verificationResult").innerText = out
     }
 
-    init();
+    window.addEventListener("load", init)
   </script>
 </body>
 </html>
