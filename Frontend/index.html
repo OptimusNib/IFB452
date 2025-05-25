@@ -37,6 +37,13 @@
     <button onclick="addServiceprovider()">Register Car</button>
   </div>
   <div class="card">
+    <h2>Add Service</h2>
+	    <input id="addresss" placeholder="address" />
+
+
+    <button onclick="addApprovedInsurer()">Register Car</button>
+  </div>
+  <div class="card">
     <h2>Log Service</h2>
     <input id="tokenId" type="number" placeholder="Token ID" >
 	<input type="text" id="description" placeholder="Description" >
@@ -51,41 +58,73 @@
     <pre id="detailss"></pre>
   </div>
 
-  <div class="card">
-    <h2>Add Approved Insurer</h2>
-    <input type="text" id="newInsurerAddress" placeholder="Insurer Address" />
-    <button onclick="addApprovedInsurer()">Add Insurer</button>
-    <pre id="appinsurer"></pre>
-  </div>
-
-  <div class="card">
-    <h2>Log Insurance Incident</h2>
+   <h2>Log Insurance Incident</h2>
     <input type="number" id="incidentTokenId" placeholder="Vehicle Token ID" />
     <input type="text" id="incidentSummary" placeholder="Summary" />
     <input type="text" id="incidentInsurer" placeholder="Insurer Name" />
     <button onclick="logIncident()">Log Incident</button>
-    <pre id="logincident"></pre>
-  </div>
 
-  <div class="card">
-    <h2>Get All Vehicle Incidents</h2>
-    <input type="number" id="incidentTokenIdView" placeholder="Vehicle Token ID" />
-    <button onclick="getIncidents()">Get Incidents</button>
-    <pre id="getincidents"></pre>
-  </div>
 
-  <div class="card">
-    <h2>Verify Vehicle</h2>
-    <input type="number" id="verifyTokenId" placeholder="Vehicle Token ID" />
-    <button onclick="verifyVehicle()">Verify</button>
-    <pre id="verificationResult"></pre>
-  </div>
+  <h2>Verify Vehicle</h2>
+  <!-- Example input and output elements -->
+<input type="text" id="verifyTokenId" placeholder="Enter Token ID">
+<button onclick="verifyVehicle()">Verify Vehicle</button>
+<pre id="verificationResult"></pre>
 
-  
+
   <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
   <script>
-    const contractAddress = "0xa187411d9b219C8a0304c652D55cE4F4a5f3Ae76";
+    const contractAddress = "0x479079a23968e11Ba5ed1F08F1c532c84ea52803";
     const contractABI =[
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "insurer",
+				"type": "address"
+			}
+		],
+		"name": "addApprovedInsurer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newStakeholder",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_newName",
+				"type": "string"
+			}
+		],
+		"name": "addServiceprovider",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "approve",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -366,6 +405,52 @@
 		"type": "event"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "summary",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "insurer",
+				"type": "string"
+			}
+		],
+		"name": "logIncident",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_newDescription",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_tokenURI",
+				"type": "string"
+			}
+		],
+		"name": "logService",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -398,6 +483,123 @@
 		"type": "event"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_model",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_year",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_tokenURI",
+				"type": "string"
+			}
+		],
+		"name": "registerCar",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "insurer",
+				"type": "address"
+			}
+		],
+		"name": "removeApprovedInsurer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "setApprovalForAll",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -423,80 +625,12 @@
 		"type": "event"
 	},
 	{
-		"inputs": [],
-		"name": "CarCount",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "Serviceprovider",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "ServiceProvider",
+				"name": "from",
 				"type": "address"
 			},
-			{
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"internalType": "bool",
-				"name": "isapproved",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "insurer",
-				"type": "address"
-			}
-		],
-		"name": "addApprovedInsurer",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newStakeholder",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "_newName",
-				"type": "string"
-			}
-		],
-		"name": "addServiceprovider",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
 			{
 				"internalType": "address",
 				"name": "to",
@@ -508,7 +642,20 @@
 				"type": "uint256"
 			}
 		],
-		"name": "approve",
+		"name": "transferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -522,6 +669,19 @@
 			}
 		],
 		"name": "balanceOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "CarCount",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -737,52 +897,6 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "summary",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "insurer",
-				"type": "string"
-			}
-		],
-		"name": "logIncident",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_newDescription",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_tokenURI",
-				"type": "string"
-			}
-		],
-		"name": "logService",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			}
@@ -866,118 +980,30 @@
 	{
 		"inputs": [
 			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "Serviceprovider",
+		"outputs": [
 			{
-				"internalType": "string",
-				"name": "_model",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_year",
-				"type": "uint256"
+				"internalType": "address",
+				"name": "ServiceProvider",
+				"type": "address"
 			},
 			{
 				"internalType": "string",
-				"name": "_tokenURI",
+				"name": "name",
 				"type": "string"
-			}
-		],
-		"name": "registerCar",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "insurer",
-				"type": "address"
-			}
-		],
-		"name": "removeApprovedInsurer",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bytes",
-				"name": "data",
-				"type": "bytes"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
 			},
 			{
 				"internalType": "bool",
-				"name": "approved",
+				"name": "isapproved",
 				"type": "bool"
 			}
 		],
-		"name": "setApprovalForAll",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -1029,42 +1055,6 @@
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "transferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -1186,7 +1176,7 @@
         const result = await response.json();
 
         if (result.IpfsHash) {
-          const ipfsURI = `ipfs://${result.IpfsHash}`;
+          const ipfsURI = `https://violet-keen-worm-257.mypinata.cloud/ipfs/${result.IpfsHash}`;
 		  const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
         const Account = accounts[0]; 
@@ -1272,7 +1262,7 @@
     const result = await response.json();
 
     if (result.IpfsHash) {
-      const ipfsURI = `ipfs://${result.IpfsHash}`;
+      const ipfsURI = `https://violet-keen-worm-257.mypinata.cloud/ipfs/${result.IpfsHash}`;
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       const secondAccount = accounts[1];
 
@@ -1312,118 +1302,106 @@
         alert("❌ Car not found");
       }
 	}
+	async function addApprovedInsurer(){
+		  const address = document.getElementById("addresss").value;
+		   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-  async function addInsurer() {
-    const insurerAddress = document.getElementById("newInsurerAddress").value;
-    try {
-      const tx = await contract.addApprovedInsurer(insurerAddress);
-      await tx.wait();
-      alert("Insurer added successfully.");
-    } catch (err) {
-      console.error("Error adding insurer:", err);
-      alert("Failed to add insurer.");
-    }
-  }
-
-  async function logIncident() {
-    const tokenId = document.getElementById("incidentTokenId").value;
-    const summary = document.getElementById("incidentSummary").value;
-    const insurer = document.getElementById("incidentInsurer").value;
-
-    try {
-      const tx = await contract.logIncident(tokenId, summary, insurer);
-      await tx.wait();
-      alert("Incident logged successfully.");
-    } catch (err) {
-      console.error("Error logging incident:", err);
-      alert("Failed to log incident.");
-    }
-  }
-
-  async function getIncidents() {
-    const tokenId = document.getElementById("incidentTokenIdView").value;
-    const resultEl = document.getElementById("incidentResult");
-
-    try {
-      const incidents = await contract.getIncidents(tokenId);
-      let output = `Incidents for Token ${tokenId}:\n`;
-
-      for (let i = 0; i < incidents.length; i++) {
-        const incident = incidents[i];
-        output += `\n${i + 1}.
-  Summary: ${incident.summary}
-  Insurer: ${incident.insurer}
-  Date: ${new Date(Number(incident.date) * 1000).toLocaleString()}\n`;
-      }
-
-      resultEl.innerText = output || "No incidents found.";
-    } catch (err) {
-      console.error("Error retrieving incidents:", err);
-      resultEl.innerText = "Failed to retrieve incidents.";
-    }
-  }
-
-    async function verifyVehicle() {
-      const tokenId = document.getElementById("verifyTokenId").value;
-      const resultEl = document.getElementById("verificationResult");
-
-      try {
-        const result = await verificationContract.verifyVehicle(tokenId);
-
-        const [
-          manufacturer,
-          name,
-          model,
-          year,
-          timeregistered,
-          serviceProvider,
-          carId,
-          timeServiced,
-          nameProvider,
-          description,
-          incidentSummaries
-        ] = result;
-
-        let output = `
-    Vehicle Details
-    ---------------
-    Manufacturer: ${manufacturer}
-    Name: ${name}
-    Model: ${model}
-    Year: ${year}
-    Registered: ${new Date(Number(timeregistered) * 1000).toLocaleString()}
-
-    Service Details
-    ---------------
-    Service Provider: ${serviceProvider}
-    Provider Name: ${nameProvider}
-    Service Description: ${description}
-    Serviced On: ${new Date(Number(timeServiced) * 1000).toLocaleString()}
-
-    Incident Summaries
-    ------------------`;
-
-        if (incidentSummaries.length === 0) {
-          output += `\nNo incidents logged.`;
-        } else {
-          incidentSummaries.forEach((s, i) => {
-            output += `\n${i + 1}. ${s}`;
-          });
-        }
-
-        resultEl.innerText = output;
-
+        const Account = accounts[0]; 
+       try {
+        await contract.methods.addApprovedInsurer(address)
+          .send({ from:  Account  });
+        alert("Car registered successfully!");
       } catch (err) {
-        console.error("Verification failed:", err);
-        resultEl.innerText = "Error verifying vehicle.";
+        console.error(err);
+        alert("Error registering car");
+      }
+  
+	} 
+	async function logIncident() {
+      const tokenId = document.getElementById("incidentTokenId").value;
+      const summary = document.getElementById("incidentSummary").value;
+      const insurer = document.getElementById("incidentInsurer").value;
+	        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+       const ThirdAccount = accounts[2];
+
+      try { 
+		await contract.methods.logIncident(tokenId, summary, insurer)
+        .send({ from: ThirdAccount });
+      
+        alert("Incident logged successfully.");
+      } catch (err) {
+          console.error("Error logging incident:", err);
+          alert("Failed to log incident.");
       }
     }
+    async function verifyVehicle() {
+  const tokenId = document.getElementById("verifyTokenId").value;
+  const resultEl = document.getElementById("verificationResult");
 
+  if (!tokenId || isNaN(tokenId)) {
+    resultEl.innerText = "Please enter a valid numeric Token ID.";
+    return;
+  }
+
+  try {
+    const result = await contract.methods.verifyVehicle(tokenId).call();
+
+    const {
+      manufacturer,
+      name,
+      model,
+      year,
+      timeregistered,
+      serviceProvider,
+      carId,
+      timeServiced,
+      nameProvider,
+      description,
+      incidentSummaries
+	 } = result;
+
+    let output = `
+Vehicle Details
+---------------
+Manufacturer: ${manufacturer}
+Name: ${name}
+Model: ${model}
+Year: ${year}
+Registered: ${new Date(Number(timeregistered) * 1000).toLocaleString()}
+
+Service Details
+---------------
+Service Provider: ${serviceProvider}
+Provider Name: ${nameProvider}
+Service Description: ${description}
+Serviced On: ${new Date(Number(timeServiced) * 1000).toLocaleString()}
+
+Incident Summaries
+------------------`;
+
+    if (incidentSummaries.length === 0) {
+      output += `\nNo incidents logged.`;
+    } else {
+      incidentSummaries.forEach((summary, i) => {
+        output += `\n${i + 1}. ${summary}`;
+      });
+    }
+
+    resultEl.innerText = output;
+
+  } catch (err) {
+    console.error("Verification failed:", err);
+    resultEl.innerText = "❌ Error verifying vehicle. Make sure the token ID is valid and try again.";
+  }
+}
 
     window.addEventListener("load", init);
 	    window.registerCar = registerCar;
 		window.addServiceprovider=addServiceprovider;
+		window.addApprovedInsurer=addApprovedInsurer;
       window.logService= logService;
+	  window.logIncident=logIncident;
   </script>
 </body>
 </html>
