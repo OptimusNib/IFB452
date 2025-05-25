@@ -101,8 +101,6 @@ function getServiceDetails(uint256 carId) public view returns (address, uint256,
     }
     }
 
-
-
 // logs insurance claims and accident history
 contract InsuranceRecord {
     address public owner;
@@ -115,7 +113,7 @@ contract InsuranceRecord {
     struct Incident {
         string summary; //description
         string insurer; //company name
-        uint256 date; //UNIX time... need to update
+        uint256 date; 
     }
 
     //map vehicle tokenId to list of incidents
@@ -161,12 +159,12 @@ contract InsuranceRecord {
 contract Verification {
     //other contract references
     //VehicleRegistry public vehicleRegistry; not sure where vehicle info is stored
-    FootballPlayers public serviceLog;
+    Cars public serviceLog;
     InsuranceRecord public insuranceRecord;
 
     constructor(
         //VehicleRegistry _vehicleRegistry,
-        FootballPlayers _serviceLog,
+        Cars _serviceLog,
         InsuranceRecord _insuranceRecord
     ) {
         //vehicleRegistry = _vehicleRegistry;
@@ -175,17 +173,32 @@ contract Verification {
     }
 
     function verifyVehicle(uint256 tokenId) external view returns (
-        string memory make,
+        address manufacturer,
+        string memory name,
         string memory model,
-        string memory year,
-        address currentOwner,
-        string[] memory services,
+        uint256 year,
+        uint256 timeregistered,
+        address ServiceProvider,
+        uint256 carId,
+        uint256 timeServiced,
+        string memory nameProvider,
+        string memory description,
         string[] memory incidentSummaries
     ) {
-        //not sure where vehicle info is stored
-        (make, model, year, currentOwner) = serviceLog.getCarDetails(tokenId);
-        services = serviceLog.getServiceDetails(tokenId);
-        (incidentSummaries, , ) = insuranceRecord.getIncidents(tokenId);
+        // extract car information
+        (manufacturer, name, model, year, timeregistered, ) = serviceLog.getCarDetails(tokenId);
+        (ServiceProvider, carId, timeServiced, nameProvider, description) = serviceLog.getServiceDetails(tokenId);
+        InsuranceRecord.Incident[] memory incidents = insuranceRecord.getIncidents(tokenId);
+        uint256 count = incidents.length;
+        incidentSummaries = new string[](count);
+        string[] memory insurers = new string[](count);
+        uint256[] memory dates = new uint256[](count);
+
+        for (uint256 i = 0; i < count; i++) {
+            incidentSummaries[i] = incidents[i].summary;
+            insurers[i] = incidents[i].insurer;
+            dates[i] = incidents[i].date;
+        }
     }
 }
 
