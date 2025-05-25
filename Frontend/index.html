@@ -25,6 +25,18 @@
     <pre id="result"></pre>
   </div>
 
+  <h2>Log Insurance Incident</h2>
+    <input type="number" id="incidentTokenId" placeholder="Vehicle Token ID" />
+    <input type="text" id="incidentSummary" placeholder="Summary" />
+    <input type="text" id="incidentInsurer" placeholder="Insurer Name" />
+    <button onclick="logIncident()">Log Incident</button>
+
+
+  <h2>Verify Vehicle</h2>
+  <input type="number" id="verifyTokenId" placeholder="Vehicle Token ID" />
+  <button onclick="verifyVehicle()">Verify</button>
+  <pre id="verificationResult"></pre>
+
   <script src="abi.js"></script>
   <script>
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -48,6 +60,76 @@
     async function getVehicle() {
       const id = document.getElementById("tokenId").value;
       alert(`[Mock] Fetch vehicle info for ID: ${id}`);
+    }
+
+    async function logIncident() {
+      const tokenId = document.getElementById("incidentTokenId").value;
+      const summary = document.getElementById("incidentSummary").value;
+      const insurer = document.getElementById("incidentInsurer").value;
+
+      try {
+        const tx = await insuranceRecordContract.logIncident(tokenId, summary, insurer);
+        await tx.wait();
+        alert("Incident logged successfully.");
+      } catch (err) {
+          console.error("Error logging incident:", err);
+          alert("Failed to log incident.");
+      }
+    }
+    async function verifyVehicle() {
+      const tokenId = document.getElementById("verifyTokenId").value;
+      const resultEl = document.getElementById("verificationResult");
+
+      try {
+        const result = await verificationContract.verifyVehicle(tokenId);
+
+        const [
+          manufacturer,
+          name,
+          model,
+          year,
+          timeregistered,
+          serviceProvider,
+          carId,
+          timeServiced,
+          nameProvider,
+          description,
+          incidentSummaries
+        ] = result;
+
+        let output = `
+    Vehicle Details
+    ---------------
+    Manufacturer: ${manufacturer}
+    Name: ${name}
+    Model: ${model}
+    Year: ${year}
+    Registered: ${new Date(Number(timeregistered) * 1000).toLocaleString()}
+
+    Service Details
+    ---------------
+    Service Provider: ${serviceProvider}
+    Provider Name: ${nameProvider}
+    Service Description: ${description}
+    Serviced On: ${new Date(Number(timeServiced) * 1000).toLocaleString()}
+
+    Incident Summaries
+    ------------------`;
+
+        if (incidentSummaries.length === 0) {
+          output += `\nNo incidents logged.`;
+        } else {
+          incidentSummaries.forEach((s, i) => {
+            output += `\n${i + 1}. ${s}`;
+          });
+        }
+
+        resultEl.innerText = output;
+
+      } catch (err) {
+        console.error("Verification failed:", err);
+        resultEl.innerText = "Error verifying vehicle.";
+      }
     }
 
     init();

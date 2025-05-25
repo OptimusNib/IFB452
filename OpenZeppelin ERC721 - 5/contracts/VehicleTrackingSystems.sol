@@ -158,7 +158,7 @@ contract InsuranceRecord {
 
 contract Verification {
     //other contract references
-    //VehicleRegistry public vehicleRegistry; not sure where vehicle info is stored
+    //VehicleRegistry public vehicleRegistry; 
     Cars public serviceLog;
     InsuranceRecord public insuranceRecord;
 
@@ -184,6 +184,8 @@ contract Verification {
         string memory nameProvider,
         string memory description,
         string[] memory incidentSummaries
+        // string[] memory insurers,
+        // uint256[] memory dates
     ) {
         // extract car information
         (manufacturer, name, model, year, timeregistered, ) = serviceLog.getCarDetails(tokenId);
@@ -191,13 +193,13 @@ contract Verification {
         InsuranceRecord.Incident[] memory incidents = insuranceRecord.getIncidents(tokenId);
         uint256 count = incidents.length;
         incidentSummaries = new string[](count);
-        string[] memory insurers = new string[](count);
-        uint256[] memory dates = new uint256[](count);
+        // insurers = new string[](count);
+        // dates = new uint256[](count);
 
         for (uint256 i = 0; i < count; i++) {
             incidentSummaries[i] = incidents[i].summary;
-            insurers[i] = incidents[i].insurer;
-            dates[i] = incidents[i].date;
+            // insurers[i] = incidents[i].insurer;
+            // dates[i] = incidents[i].date;
         }
     }
 }
