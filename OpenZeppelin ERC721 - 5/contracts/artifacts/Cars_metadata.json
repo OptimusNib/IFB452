@@ -387,6 +387,19 @@
 				"inputs": [
 					{
 						"internalType": "address",
+						"name": "insurer",
+						"type": "address"
+					}
+				],
+				"name": "addApprovedInsurer",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
 						"name": "newStakeholder",
 						"type": "address"
 					},
@@ -544,6 +557,42 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "getIncidents",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "summary",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "insurer",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "date",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Cars.Incident[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
 						"name": "carId",
 						"type": "uint256"
 					}
@@ -601,6 +650,29 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "summary",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "insurer",
+						"type": "string"
+					}
+				],
+				"name": "logIncident",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -734,6 +806,19 @@
 					}
 				],
 				"name": "registerCar",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "insurer",
+						"type": "address"
+					}
+				],
+				"name": "removeApprovedInsurer",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -899,6 +984,75 @@
 				"name": "transferOwnership",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "verifyVehicle",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "manufacturer",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "model",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "year",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timeregistered",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "ServiceProvider",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "carId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timeServiced",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "nameProvider",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "description",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "incidentSummaries",
+						"type": "string[]"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			}
 		],
@@ -1227,11 +1381,11 @@
 			]
 		},
 		"OpenZeppelin ERC721 - 5/contracts/VehicleTrackingSystems.sol": {
-			"keccak256": "0x677c502c870eafeba0fbfe44832f69cba6703d330d5432b1c50c2dde16286ed9",
+			"keccak256": "0x1c4b0c69bbc42455ab67a04f6f1dbf5a98c4376e3037a9c0452a5ba77dc3ffcc",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://7569b99c8b5c3652d58141101a1bf30a30ce8be90923ad3e94e1a83160146090",
-				"dweb:/ipfs/Qmcg6aYPPpoZLk59CURyosFE95qhV5Dxvy4tHRUyXQVQaD"
+				"bzz-raw://79800214d86fcb7cea9476432238ea0a3d64ac3c0ae701556bb50877185ec325",
+				"dweb:/ipfs/QmdymZPpheJHSodu1B1X9pKtxHoSCeVjjcq1or7PkGyRts"
 			]
 		}
 	},

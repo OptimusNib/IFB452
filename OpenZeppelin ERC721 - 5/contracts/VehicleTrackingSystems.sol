@@ -99,15 +99,9 @@ function getServiceDetails(uint256 carId) public view returns (address, uint256,
         Car storage car = cars[carId];
         return ( car.manufacturer,car.name, car.model, car.year, car.timeregistered, tokenURI(carId));
     }
-    }
+    
 
-// logs insurance claims and accident history
-contract InsuranceRecord {
-    address public owner;
 
-    constructor() {
-        owner = msg.sender;
-    }
     
     // insurance incident or claim
     struct Incident {
@@ -117,28 +111,22 @@ contract InsuranceRecord {
     }
 
     //map vehicle tokenId to list of incidents
-    mapping(uint256 => Incident[]) private incidentHistory;
+    mapping(uint256 => Incident[]) incidentHistory;
 
     //map storing approved insurers that can write
-    mapping(address => bool) public approvedInsurers;
+    mapping(address => bool)  approvedInsurers;
 
     //restricts functions to approved contract owners
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Only contract owner");
-        _;
-    }
-
-    //restricts functions to approved contract owners
-    modifier onlyApprovedInsurer() {
-        require(approvedInsurers[msg.sender], "Not an approved insurer");
-        _;
-    }
-
+   
+  
     // add approved contract owner
     function addApprovedInsurer(address insurer) public onlyOwner {
         approvedInsurers[insurer] = true;
     }
-
+ modifier onlyApprovedInsurer() {
+        require(approvedInsurers[msg.sender], "Not an approved insurer");
+        _;
+    }
     //remove contract owner
     function removeApprovedInsurer(address insurer) public onlyOwner {
         approvedInsurers[insurer] = false;
@@ -153,24 +141,8 @@ contract InsuranceRecord {
     function getIncidents(uint256 tokenId) public view returns (Incident[] memory) {
         return incidentHistory[tokenId];
     }
-}
 
 
-contract Verification {
-    //other contract references
-    //VehicleRegistry public vehicleRegistry; 
-    Cars public serviceLog;
-    InsuranceRecord public insuranceRecord;
-
-    constructor(
-        //VehicleRegistry _vehicleRegistry,
-        Cars _serviceLog,
-        InsuranceRecord _insuranceRecord
-    ) {
-        //vehicleRegistry = _vehicleRegistry;
-        serviceLog = _serviceLog;
-        insuranceRecord = _insuranceRecord;
-    }
 
     function verifyVehicle(uint256 tokenId) external view returns (
         address manufacturer,
@@ -188,9 +160,9 @@ contract Verification {
         // uint256[] memory dates
     ) {
         // extract car information
-        (manufacturer, name, model, year, timeregistered, ) = serviceLog.getCarDetails(tokenId);
-        (ServiceProvider, carId, timeServiced, nameProvider, description) = serviceLog.getServiceDetails(tokenId);
-        InsuranceRecord.Incident[] memory incidents = insuranceRecord.getIncidents(tokenId);
+        (manufacturer, name, model, year, timeregistered, ) = getCarDetails(tokenId);
+        (ServiceProvider, carId, timeServiced, nameProvider, description) = getServiceDetails(tokenId);
+        Incident[] memory incidents = getIncidents(tokenId);
         uint256 count = incidents.length;
         incidentSummaries = new string[](count);
         // insurers = new string[](count);
@@ -202,6 +174,7 @@ contract Verification {
             // dates[i] = incidents[i].date;
         }
     }
+    
 }
 
    
