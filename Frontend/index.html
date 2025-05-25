@@ -10,67 +10,58 @@
   </style>
 </head>
 <body>
-  <h1>🚗 Car Registry (NFT-based)</h1>
+  <h1>Car Registry (NFT-based)</h1>
 
   <div class="card">
     <h2>Register New Car</h2>
-    <input id="name" placeholder="Name (e.g. Toyota)" />
-    <input id="model" placeholder="Model (e.g. Corolla)" />
-    <input id="year" type="number" placeholder="Year of Car" />
-    <button onclick="registerCar()">Register Car</button>
+    <input type="text" id="name" placeholder="Name (e.g. Toyota)" >
+    <input type="text" id="model" placeholder="Model (e.g. Corolla)" >
+    <input id="year" type="number" placeholder="Year of Car" >
+    <button type="submit" onclick="registerCar()">Register Car</button>
 	  <pre id="output"></pre>
 
   </div>
-
   <div class="card">
     <h2>Get Car Details</h2>
-    <input id="carId" type="number" placeholder="Token ID" />
-    <button onclick="getCarDetails()">View Details</button>
+    <input id="carId" type="number" placeholder="Token ID" >
+    <button type="submit" onclick="getCarDetails()">View Details</button>
     <pre id="details"></pre>
   </div>
      <div class="card">
-    <h2>Add Service</h2>
-	    <input id="address" placeholder="address" />
-
-    <input id="names" placeholder="Name" />
-
-    <button onclick="addServiceprovider()">Register Car</button>
+    <h2>Add Service Provider</h2>
+	<input type="text" id="address" placeholder="address of service provider">
+    <input type="text" id="names" placeholder="Name">
+    <button type="submit" onclick="addServiceprovider()">Add Service Provider</button>
   </div>
   <div class="card">
-    <h2>Add Service</h2>
-	    <input id="addresss" placeholder="address" />
-
-
-    <button onclick="addApprovedInsurer()">Register Car</button>
+    <h2>Add Insurer</h2>
+	<input type="text" id="Insureraddress" placeholder="address of Insurer" >
+    <button type="submit" onclick="addApprovedInsurer()">Add Insurer</button>
   </div>
   <div class="card">
     <h2>Log Service</h2>
     <input id="tokenId" type="number" placeholder="Token ID" >
 	<input type="text" id="description" placeholder="Description" >
-
-    <button onclick="logService()">Log Details</button>
+    <button type="submit" onclick="logService()">Log Service Details</button>
   </div>
-
   <div class="card">
     <h2>Get Service Details</h2>
-    <input id="carIds" type="number" placeholder="Token ID" />
-    <button onclick="getServiceDetails()">View Details</button>
+    <input id="carIds" type="number" placeholder="Token ID" >
+    <button type="submit" onclick="getServiceDetails()">View Service Details</button>
     <pre id="detailss"></pre>
   </div>
-
-   <h2>Log Insurance Incident</h2>
-    <input type="number" id="incidentTokenId" placeholder="Vehicle Token ID" />
-    <input type="text" id="incidentSummary" placeholder="Summary" />
-    <input type="text" id="incidentInsurer" placeholder="Insurer Name" />
-    <button onclick="logIncident()">Log Incident</button>
-
-
-  <h2>Verify Vehicle</h2>
-  <!-- Example input and output elements -->
+  <div class="card">
+	<h2>Log Insurance Incident</h2>
+    <input type="number" id="incidentTokenId" placeholder="Vehicle Token ID" >
+    <input type="text" id="incidentSummary" placeholder="Summary" >
+    <input type="text" id="incidentInsurer" placeholder="Insurer Name" >
+    <button type="submit" onclick="logIncident()">Log Incident</button>
+  </div>
+<div class="card"> <h2>Verify Vehicle</h2>
 <input type="text" id="verifyTokenId" placeholder="Enter Token ID">
-<button onclick="verifyVehicle()">Verify Vehicle</button>
+<button type="submit" onclick="verifyVehicle()">Verify Vehicle</button>
 <pre id="verificationResult"></pre>
-
+</div>
 
   <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
   <script>
@@ -1128,7 +1119,11 @@
 	}
 ]
     let web3, contract, account;
+
+	//JWT to store details of car on Pinata as Json file
  const pinataJWT = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI3N2E0N2ZkMC0zYzdhLTQ5MjQtYWFlZS00MTc5NmZjM2I5ZWIiLCJlbWFpbCI6InRydW9uZ3RhbnBodTA1MDcyMDAzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI0MDExMDQ5NjU4OGRkNjNhOTBlZCIsInNjb3BlZEtleVNlY3JldCI6ImQ5Y2JlZThiOTQxZGM3ODIxODY0OGQ2YWNkOTc4Y2Y3OGFkYjQ4NWU4MzYwNmNkYzNhZjIxN2MwMDNkZDJlZDUiLCJleHAiOjE3Nzk2NzM3NjV9.vraPsK0HqatUS_bQ8NiAxaa0wFkK28GRkuG94FH8gsI";
+    
+   //Connect the system with MetaMask
     async function init() {
       if (typeof window.ethereum !== 'undefined') {
         web3 = new Web3(window.ethereum);
@@ -1138,7 +1133,7 @@
         alert("Please install MetaMask.");
       }
     }
-
+    //The function to create NFT and store the details of cars by manufacturer 
    async function registerCar() {
       const name = document.getElementById("name").value;
       const model = document.getElementById("model").value;
@@ -1148,8 +1143,7 @@
         alert("Please fill in all fields.");
         return;
       }
-  const now = new Date();
-
+     const now = new Date();
       const Cardata = {
         name,
         description: "Car NFT metadata stored on IPFS using Pinata",
@@ -1184,18 +1178,15 @@
           .send({ from: Account });
         alert("Car registered successfully!");
         } else {
-          throw new Error("Failed to upload to Pinata");
+          throw new Error("Can not upload to Pinata");
         }
       } catch (err) {
         console.error(err);
-        alert("❌ Upload failed");
+        alert(" Upload failed");
       }
-	  
-	  
-      
     }
 
-
+    //Get the details of car via CarId
     async function getCarDetails() {
       const tokenId = document.getElementById("carId").value;
 	  
@@ -1217,23 +1208,23 @@
         alert("Car not found");
       }
     }
-   
+   //This function helps the owner who deploy the contract to add service provider
 	async function addServiceprovider(){
-		  const address = document.getElementById("address").value;
+		   const address = document.getElementById("address").value;
            const name = document.getElementById("names").value;
 		   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-
-        const Account = accounts[0]; 
+           const Account = accounts[0]; 
        try {
         await contract.methods.addServiceprovider(address, name)
           .send({ from:  Account  });
-        alert("Car registered successfully!");
+        alert("Service provider added!");
       } catch (err) {
         console.error(err);
-        alert("Error registering car");
+        alert("Error adding service provider");
       }
   
 	} 
+ //The function helps service provider to log the service for cars
 	async function logService() {
   const tokenId = document.getElementById("tokenId").value;
   const description = document.getElementById("description").value;
@@ -1241,7 +1232,7 @@
   const Servicedata = {
     description,
     carId: tokenId,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toLocaleString()
   };
 
   try {
@@ -1269,18 +1260,18 @@
       await contract.methods.logService(description, tokenId, ipfsURI)
         .send({ from: secondAccount });
 
-      alert("✅ Service Logged successfully with second account!");
+      alert("Service Logged successfully with service provider!");
     } else {
       throw new Error("Upload to Pinata failed");
     }
   } catch (err) {
     console.error(err);
-    alert("❌ Error logging service with second account");
+    alert("Error logging service with second account");
   }
 }
 
 
-
+  //Get the details of service
 	async function getServiceDetails(){
        const tokenId = document.getElementById("carIds").value;
 	  
@@ -1289,21 +1280,19 @@
         const date = new Date(result[2]*1000).toLocaleString();
         document.getElementById("detailss").textContent = JSON.stringify({
           ServiceProvider: result[0],
-		  		  id: result[1],
-		  		  ServiceTime: date,
-
+		  id: result[1],
+		  ServiceTime: date,
           name: result[3],
           description: result[4],
-
-        
         }, null, 2);
       } catch (err) {
         console.error(err);
         alert("❌ Car not found");
       }
 	}
+	//The function helps owner to add the valid Insurer
 	async function addApprovedInsurer(){
-		  const address = document.getElementById("addresss").value;
+		  const address = document.getElementById("Insureraddress").value;
 		   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
         const Account = accounts[0]; 
@@ -1317,6 +1306,7 @@
       }
   
 	} 
+    //The function helps Insurer to log the incident
 	async function logIncident() {
       const tokenId = document.getElementById("incidentTokenId").value;
       const summary = document.getElementById("incidentSummary").value;
@@ -1335,14 +1325,11 @@
           alert("Failed to log incident.");
       }
     }
+
+	//See full details of Cars
     async function verifyVehicle() {
   const tokenId = document.getElementById("verifyTokenId").value;
   const resultEl = document.getElementById("verificationResult");
-
-  if (!tokenId || isNaN(tokenId)) {
-    resultEl.innerText = "Please enter a valid numeric Token ID.";
-    return;
-  }
 
   try {
     const result = await contract.methods.verifyVehicle(tokenId).call();
