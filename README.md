@@ -62,7 +62,7 @@ Before starting, make sure you have:
 In your terminal or IDE:
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
+git clone https://github.com/OptimusNib/IFB452.git
 cd your-repo
 npm install
 npm start
