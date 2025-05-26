@@ -10,112 +10,82 @@
   </style>
 </head>
 <body>
-  <h1>Car Registry (NFT-based)</h1>
+  <h1>🚗 Car Registry (NFT-based)</h1>
 
   <div class="card">
     <h2>Register New Car</h2>
-    <input type="text" id="name" placeholder="Name (e.g. Toyota)" >
-    <input type="text" id="model" placeholder="Model (e.g. Corolla)" >
-    <input id="year" type="number" placeholder="Year of Car" >
-    <button type="submit" onclick="registerCar()">Register Car</button>
+    <input id="name" placeholder="Name (e.g. Toyota)" />
+    <input id="model" placeholder="Model (e.g. Corolla)" />
+    <input id="year" type="number" placeholder="Year of Car" />
+    <button onclick="registerCar()">Register Car</button>
 	  <pre id="output"></pre>
 
   </div>
+
   <div class="card">
     <h2>Get Car Details</h2>
-    <input id="carId" type="number" placeholder="Token ID" >
-    <button type="submit" onclick="getCarDetails()">View Details</button>
+    <input id="carId" type="number" placeholder="Token ID" />
+    <button onclick="getCarDetails()">View Details</button>
     <pre id="details"></pre>
   </div>
      <div class="card">
-    <h2>Add Service Provider</h2>
-	<input type="text" id="address" placeholder="address of service provider">
-    <input type="text" id="names" placeholder="Name">
-    <button type="submit" onclick="addServiceprovider()">Add Service Provider</button>
-  </div>
-  <div class="card">
-    <h2>Add Insurer</h2>
-	<input type="text" id="Insureraddress" placeholder="address of Insurer" >
-    <button type="submit" onclick="addApprovedInsurer()">Add Insurer</button>
+    <h2>Add Service</h2>
+	    <input id="address" placeholder="address" />
+
+    <input id="names" placeholder="Name" />
+
+    <button onclick="addServiceprovider()">Register Car Servicer</button>
   </div>
   <div class="card">
     <h2>Log Service</h2>
     <input id="tokenId" type="number" placeholder="Token ID" >
 	<input type="text" id="description" placeholder="Description" >
-    <button type="submit" onclick="logService()">Log Service Details</button>
+
+    <button onclick="logService()">Log Details</button>
   </div>
+
   <div class="card">
     <h2>Get Service Details</h2>
-    <input id="carIds" type="number" placeholder="Token ID" >
-    <button type="submit" onclick="getServiceDetails()">View Service Details</button>
+    <input id="carIds" type="number" placeholder="Token ID" />
+    <button onclick="getServiceDetails()">View Details</button>
     <pre id="detailss"></pre>
   </div>
-  <div class="card">
-	<h2>Log Insurance Incident</h2>
-    <input type="number" id="incidentTokenId" placeholder="Vehicle Token ID" >
-    <input type="text" id="incidentSummary" placeholder="Summary" >
-    <input type="text" id="incidentInsurer" placeholder="Insurer Name" >
-    <button type="submit" onclick="logIncident()">Log Incident</button>
-  </div>
-<div class="card"> <h2>Verify Vehicle</h2>
-<input type="text" id="verifyTokenId" placeholder="Enter Token ID">
-<button type="submit" onclick="verifyVehicle()">Verify Vehicle</button>
-<pre id="verificationResult"></pre>
-</div>
 
+  <div class="card">
+    <h2>Add Approved Insurer</h2>
+    <input type="text" id="newInsurerAddress" placeholder="Insurer Address" />
+    <button onclick="addApprovedInsurer()">Add Insurer</button>
+    <pre id="appinsurer"></pre>
+  </div>
+
+  <div class="card">
+    <h2>Log Insurance Incident</h2>
+    <input type="number" id="incidentTokenId" placeholder="Vehicle Token ID" />
+    <input type="text" id="incidentSummary" placeholder="Summary" />
+    <input type="text" id="incidentInsurer" placeholder="Insurer Name" />
+    <button onclick="logIncident()">Log Incident</button>
+    <pre id="logincident"></pre>
+  </div>
+
+  <div class="card">
+    <h2>Get All Vehicle Incidents</h2>
+    <input type="number" id="incidentTokenIdView" placeholder="Vehicle Token ID" />
+    <button onclick="getIncidents()">Get Incidents</button>
+    <pre id="getincidents"></pre>
+  </div>
+
+  <div class="card">
+    <h2>Verify Vehicle</h2>
+    <input type="number" id="verifyVehicleTokenId" placeholder="Vehicle Token ID" />
+    <button onclick="verifyVehicle()">Verify</button>
+    <pre id="verifyResult"></pre>
+  </div>
+
+  
   <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
   <script>
-    const contractAddress = "0x479079a23968e11Ba5ed1F08F1c532c84ea52803";
+    const contractAddress = "0xe7eD909b566dF601E48a644AaC46e8D5e28dbA2c";
     const contractABI =[
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "insurer",
-				"type": "address"
-			}
-		],
-		"name": "addApprovedInsurer",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newStakeholder",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "_newName",
-				"type": "string"
-			}
-		],
-		"name": "addServiceprovider",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "approve",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -396,52 +366,6 @@
 		"type": "event"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "summary",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "insurer",
-				"type": "string"
-			}
-		],
-		"name": "logIncident",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_newDescription",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_tokenURI",
-				"type": "string"
-			}
-		],
-		"name": "logService",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -474,123 +398,6 @@
 		"type": "event"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_model",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_year",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_tokenURI",
-				"type": "string"
-			}
-		],
-		"name": "registerCar",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "insurer",
-				"type": "address"
-			}
-		],
-		"name": "removeApprovedInsurer",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bytes",
-				"name": "data",
-				"type": "bytes"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "approved",
-				"type": "bool"
-			}
-		],
-		"name": "setApprovalForAll",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -616,12 +423,80 @@
 		"type": "event"
 	},
 	{
+		"inputs": [],
+		"name": "CarCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "from",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "Serviceprovider",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "ServiceProvider",
 				"type": "address"
 			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "isapproved",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "insurer",
+				"type": "address"
+			}
+		],
+		"name": "addApprovedInsurer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newStakeholder",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_newName",
+				"type": "string"
+			}
+		],
+		"name": "addServiceprovider",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
 				"internalType": "address",
 				"name": "to",
@@ -633,20 +508,7 @@
 				"type": "uint256"
 			}
 		],
-		"name": "transferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
+		"name": "approve",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -660,19 +522,6 @@
 			}
 		],
 		"name": "balanceOf",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "CarCount",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -888,6 +737,52 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "summary",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "insurer",
+				"type": "string"
+			}
+		],
+		"name": "logIncident",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_newDescription",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_tokenURI",
+				"type": "string"
+			}
+		],
+		"name": "logService",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			}
@@ -971,30 +866,118 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "Serviceprovider",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "ServiceProvider",
-				"type": "address"
-			},
-			{
 				"internalType": "string",
-				"name": "name",
+				"name": "_name",
 				"type": "string"
 			},
 			{
+				"internalType": "string",
+				"name": "_model",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_year",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_tokenURI",
+				"type": "string"
+			}
+		],
+		"name": "registerCar",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "insurer",
+				"type": "address"
+			}
+		],
+		"name": "removeApprovedInsurer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
 				"internalType": "bool",
-				"name": "isapproved",
+				"name": "approved",
 				"type": "bool"
 			}
 		],
-		"stateMutability": "view",
+		"name": "setApprovalForAll",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -1046,6 +1029,42 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -1119,11 +1138,7 @@
 	}
 ]
     let web3, contract, account;
-
-	//JWT to store details of car on Pinata as Json file
  const pinataJWT = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI3N2E0N2ZkMC0zYzdhLTQ5MjQtYWFlZS00MTc5NmZjM2I5ZWIiLCJlbWFpbCI6InRydW9uZ3RhbnBodTA1MDcyMDAzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI0MDExMDQ5NjU4OGRkNjNhOTBlZCIsInNjb3BlZEtleVNlY3JldCI6ImQ5Y2JlZThiOTQxZGM3ODIxODY0OGQ2YWNkOTc4Y2Y3OGFkYjQ4NWU4MzYwNmNkYzNhZjIxN2MwMDNkZDJlZDUiLCJleHAiOjE3Nzk2NzM3NjV9.vraPsK0HqatUS_bQ8NiAxaa0wFkK28GRkuG94FH8gsI";
-    
-   //Connect the system with MetaMask
     async function init() {
       if (typeof window.ethereum !== 'undefined') {
         web3 = new Web3(window.ethereum);
@@ -1133,7 +1148,7 @@
         alert("Please install MetaMask.");
       }
     }
-    //The function to create NFT and store the details of cars by manufacturer 
+
    async function registerCar() {
       const name = document.getElementById("name").value;
       const model = document.getElementById("model").value;
@@ -1143,7 +1158,8 @@
         alert("Please fill in all fields.");
         return;
       }
-     const now = new Date();
+  const now = new Date();
+
       const Cardata = {
         name,
         description: "Car NFT metadata stored on IPFS using Pinata",
@@ -1170,7 +1186,7 @@
         const result = await response.json();
 
         if (result.IpfsHash) {
-          const ipfsURI = `https://violet-keen-worm-257.mypinata.cloud/ipfs/${result.IpfsHash}`;
+          const ipfsURI = `ipfs://${result.IpfsHash}`;
 		  const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
         const Account = accounts[0]; 
@@ -1178,15 +1194,18 @@
           .send({ from: Account });
         alert("Car registered successfully!");
         } else {
-          throw new Error("Can not upload to Pinata");
+          throw new Error("Failed to upload to Pinata");
         }
       } catch (err) {
         console.error(err);
-        alert(" Upload failed");
+        alert("❌ Upload failed");
       }
+	  
+	  
+      
     }
 
-    //Get the details of car via CarId
+
     async function getCarDetails() {
       const tokenId = document.getElementById("carId").value;
 	  
@@ -1208,23 +1227,23 @@
         alert("Car not found");
       }
     }
-   //This function helps the owner who deploy the contract to add service provider
+   
 	async function addServiceprovider(){
-		   const address = document.getElementById("address").value;
+		  const address = document.getElementById("address").value;
            const name = document.getElementById("names").value;
 		   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-           const Account = accounts[0]; 
+
+        const Account = accounts[0]; 
        try {
         await contract.methods.addServiceprovider(address, name)
           .send({ from:  Account  });
-        alert("Service provider added!");
+        alert("Servicer Registered Successfully!");
       } catch (err) {
         console.error(err);
-        alert("Error adding service provider");
+        alert("Error registering car");
       }
   
 	} 
- //The function helps service provider to log the service for cars
 	async function logService() {
   const tokenId = document.getElementById("tokenId").value;
   const description = document.getElementById("description").value;
@@ -1232,7 +1251,7 @@
   const Servicedata = {
     description,
     carId: tokenId,
-    timestamp: new Date().toLocaleString()
+    timestamp: new Date().toISOString()
   };
 
   try {
@@ -1253,25 +1272,25 @@
     const result = await response.json();
 
     if (result.IpfsHash) {
-      const ipfsURI = `https://violet-keen-worm-257.mypinata.cloud/ipfs/${result.IpfsHash}`;
+      const ipfsURI = `ipfs://${result.IpfsHash}`;
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       const secondAccount = accounts[1];
 
       await contract.methods.logService(description, tokenId, ipfsURI)
         .send({ from: secondAccount });
 
-      alert("Service Logged successfully with service provider!");
+      alert("✅ Service Logged successfully with second account!");
     } else {
       throw new Error("Upload to Pinata failed");
     }
   } catch (err) {
     console.error(err);
-    alert("Error logging service with second account");
+    alert("❌ Error logging service with second account");
   }
 }
 
 
-  //Get the details of service
+
 	async function getServiceDetails(){
        const tokenId = document.getElementById("carIds").value;
 	  
@@ -1280,115 +1299,139 @@
         const date = new Date(result[2]*1000).toLocaleString();
         document.getElementById("detailss").textContent = JSON.stringify({
           ServiceProvider: result[0],
-		  id: result[1],
-		  ServiceTime: date,
+		  		  id: result[1],
+		  		  ServiceTime: date,
+
           name: result[3],
           description: result[4],
+
+        
         }, null, 2);
       } catch (err) {
         console.error(err);
         alert("❌ Car not found");
       }
 	}
-	//The function helps owner to add the valid Insurer
-	async function addApprovedInsurer(){
-		  const address = document.getElementById("Insureraddress").value;
-		   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-        const Account = accounts[0]; 
-       try {
-        await contract.methods.addApprovedInsurer(address)
-          .send({ from:  Account  });
-        alert("Car registered successfully!");
-      } catch (err) {
-        console.error(err);
-        alert("Error registering car");
-      }
-  
-	} 
-    //The function helps Insurer to log the incident
-	async function logIncident() {
-      const tokenId = document.getElementById("incidentTokenId").value;
-      const summary = document.getElementById("incidentSummary").value;
-      const insurer = document.getElementById("incidentInsurer").value;
-	        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-
-       const ThirdAccount = accounts[2];
-
-      try { 
-		await contract.methods.logIncident(tokenId, summary, insurer)
-        .send({ from: ThirdAccount });
-      
-        alert("Incident logged successfully.");
-      } catch (err) {
-          console.error("Error logging incident:", err);
-          alert("Failed to log incident.");
-      }
+  async function addApprovedInsurer() {
+    const insurerAddress = document.getElementById("newInsurerAddress").value;
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const Account = accounts[0];
+    try {
+      await contract.methods.addApprovedInsurer(insurerAddress)
+        .send({ from: Account });
+      alert("Insurer added successfully.");
+    } catch (err) {
+      console.error("Error adding insurer:", err);
+      alert("Failed to add insurer.");
     }
-
-	//See full details of Cars
-    async function verifyVehicle() {
-  const tokenId = document.getElementById("verifyTokenId").value;
-  const resultEl = document.getElementById("verificationResult");
-
-  try {
-    const result = await contract.methods.verifyVehicle(tokenId).call();
-
-    const {
-      manufacturer,
-      name,
-      model,
-      year,
-      timeregistered,
-      serviceProvider,
-      carId,
-      timeServiced,
-      nameProvider,
-      description,
-      incidentSummaries
-	 } = result;
-
-    let output = `
-Vehicle Details
----------------
-Manufacturer: ${manufacturer}
-Name: ${name}
-Model: ${model}
-Year: ${year}
-Registered: ${new Date(Number(timeregistered) * 1000).toLocaleString()}
-
-Service Details
----------------
-Service Provider: ${serviceProvider}
-Provider Name: ${nameProvider}
-Service Description: ${description}
-Serviced On: ${new Date(Number(timeServiced) * 1000).toLocaleString()}
-
-Incident Summaries
-------------------`;
-
-    if (incidentSummaries.length === 0) {
-      output += `\nNo incidents logged.`;
-    } else {
-      incidentSummaries.forEach((summary, i) => {
-        output += `\n${i + 1}. ${summary}`;
-      });
-    }
-
-    resultEl.innerText = output;
-
-  } catch (err) {
-    console.error("Verification failed:", err);
-    resultEl.innerText = "❌ Error verifying vehicle. Make sure the token ID is valid and try again.";
   }
-}
+
+  async function logIncident() {
+    const tokenId = document.getElementById("incidentTokenId").value;
+    const summary = document.getElementById("incidentSummary").value;
+    const insurer = document.getElementById("incidentInsurer").value;
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const Account = accounts[0];
+
+    try {
+      await contract.methods.logIncident(tokenId, summary, insurer)
+        .send({ from: Account });
+      alert("Incident logged successfully.");
+    } catch (err) {
+      console.error("Error logging incident:", err);
+      alert("Failed to log incident.");
+    }
+  }
+
+  async function getIncidents() {
+    const tokenId = document.getElementById("incidentTokenIdView").value;
+    const resultEl = document.getElementById("getincidents");
+
+    try {
+      const incidents = await contract.methods.getIncidents(tokenId).call();
+      let output = `Incidents for Token ${tokenId}:\n`;
+
+      for (let i = 0; i < incidents.length; i++) {
+        const incident = incidents[i];
+        output += `\n${i + 1}.
+  Summary: ${incident.summary}
+  Insurer: ${incident.insurer}
+  Date: ${new Date(Number(incident.date) * 1000).toLocaleString()}\n`;
+      }
+
+      resultEl.innerText = output || "No incidents found.";
+    } catch (err) {
+      console.error("Error retrieving incidents:", err);
+      resultEl.innerText = "Failed to retrieve incidents.";
+    }
+  }
+
+    async function verifyVehicle() {
+      const tokenId = document.getElementById("verifyVehicleTokenId").value;
+      const resultEl = document.getElementById("verifyResult");
+
+      try {
+        const result = await contract.methods.verifyVehicle(tokenId).call();
+
+        // Access values by index (Web3.js returns an object with numeric keys)
+        const manufacturer = result[0];
+        const name = result[1];
+        const model = result[2];
+        const year = result[3];
+        const timeregistered = result[4];
+        const serviceProvider = result[5];
+        const carId = result[6];
+        const timeServiced = result[7];
+        const nameProvider = result[8];
+        const description = result[9];
+        const incidentSummaries = result[10];
+
+        let output = `
+    ✅ Vehicle Details
+    -------------------------
+    Name: ${name}
+    Model: ${model}
+    Year: ${year}
+    Manufacturer: ${manufacturer}
+    Registered On: ${new Date(Number(timeregistered) * 1000).toLocaleString()}
+
+    🛠️ Last Service
+    -------------------------
+    Service Provider: ${serviceProvider}
+    Provider Name: ${nameProvider}
+    Description: ${description}
+    Serviced On: ${new Date(Number(timeServiced) * 1000).toLocaleString()}
+
+    📋 Incident History
+    -------------------------
+    `;
+
+        if (incidentSummaries.length === 0) {
+          output += "No incidents logged.";
+        } else {
+          incidentSummaries.forEach((summary, index) => {
+            output += `${index + 1}. ${summary}\n`;
+          });
+        }
+
+        resultEl.innerText = output;
+
+      } catch (err) {
+        console.error("Verification failed:", err);
+        resultEl.innerText = "❌ Error verifying vehicle.";
+      }
+    }
+
 
     window.addEventListener("load", init);
 	    window.registerCar = registerCar;
 		window.addServiceprovider=addServiceprovider;
-		window.addApprovedInsurer=addApprovedInsurer;
       window.logService= logService;
-	  window.logIncident=logIncident;
+    window.addApprovedInsurer = addApprovedInsurer;
+    window.logIncident = logIncident;
+    window.getIncidents = getIncidents;
+    window.verifyVehicle = verifyVehicle;
   </script>
 </body>
 </html>
